@@ -438,7 +438,14 @@ await Effect.runPromise(
     );
     // Over CDP the worker drives the browser's own context and page and owns neither.
     const context =
-      attached === undefined ? yield* promise(() => browser.newContext()) : browser.contexts()[0];
+      attached === undefined
+        ? yield* promise(() =>
+            browser.newContext({
+              ...(options.proxy === undefined ? {} : { proxy: options.proxy }),
+              ...(options.userAgent === undefined ? {} : { userAgent: options.userAgent }),
+            }),
+          )
+        : browser.contexts()[0];
     if (context === undefined)
       return yield* Effect.fail(new Error("CDP browser has no default context"));
     const page =

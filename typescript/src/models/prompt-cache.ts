@@ -230,7 +230,7 @@ const promptCacheSettingRefused = (error: unknown) =>
     (text) => typeof text === "string" && promptCacheSetting.test(text),
   );
 
-const isPrewarm = (request: ModelRequest) => {
+export const isPrewarm = (request: ModelRequest) => {
   const options: unknown = request.modelSettings.providerData?.["prompt_cache_options"];
   return typeof options === "object" && options !== null && Reflect.get(options, "prewarm") === true;
 };
@@ -254,7 +254,7 @@ const withoutBreakpoints = (item: AgentInputItem): AgentInputItem => {
 };
 
 /** The request without OpenAI's prompt-cache settings; its `prompt_cache_key` stays. */
-const withoutPromptCacheSettings = (request: ModelRequest): ModelRequest => {
+export const withoutPromptCacheSettings = (request: ModelRequest): ModelRequest => {
   const { promptCacheOptions: _options, ...settings } = request.modelSettings;
   const { prompt_cache_options: _sent, ...providerData } = settings.providerData ?? {};
   return {

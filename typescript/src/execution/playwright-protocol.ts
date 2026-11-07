@@ -53,6 +53,16 @@ export const NativeWorkerOptions = Schema.Struct({
   endpoint: Schema.String,
   startupTimeoutMs: Schema.Number,
   library: PlaywrightLibrary,
+  /** CareerX fork: the context's egress proxy and user agent. */
+  proxy: Schema.optionalWith(
+    Schema.Struct({
+      server: Schema.String,
+      username: Schema.optionalWith(Schema.String, { exact: true }),
+      password: Schema.optionalWith(Schema.String, { exact: true }),
+    }),
+    { exact: true },
+  ),
+  userAgent: Schema.optionalWith(Schema.String, { exact: true }),
   /** The most bytes of JSON a script's result may take; 1 MiB when absent. Output keeps 1 MiB. */
   resultLimitBytes: Schema.optional(Schema.Number),
   /** Attach over CDP and drive the browser's own context, at this page (its first when absent). */

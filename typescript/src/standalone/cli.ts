@@ -115,7 +115,7 @@ const stopMeanings: Readonly<Record<MintStopReason | JobBuildBlocked["reason"], 
  * The lines a mint that saved nothing prints under its summary: its codes and counts. Each code
  * is a fixed literal, and the outcome holds no step's output, so no secret prints.
  */
-const stoppedLines = (result: LocalMintOutcome) => {
+export const stoppedLines = (result: LocalMintOutcome) => {
   const why = result.stopReason ?? result.blocked?.reason;
   const denial = result.publicationDenial;
   const denialCodes = [denial?.reason, denial?.category].filter((code) => code !== undefined);
@@ -155,7 +155,7 @@ const stoppedLines = (result: LocalMintOutcome) => {
  * cookie. The summary stays as the harness wrote it for its caller, which may quote Guardian's
  * rationale. Credentials and one-time codes are redacted before any model reads them.
  */
-const reportText = (result: LocalMintOutcome) =>
+export const reportText = (result: LocalMintOutcome) =>
   `${JSON.stringify(
     {
       ...result,

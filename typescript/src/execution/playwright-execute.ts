@@ -38,6 +38,14 @@ export interface PlaywrightOptions {
   /** The Playwright build the executor drives the browser with. Defaults to `playwright`. */
   readonly library?: PlaywrightLibrary;
   readonly headless?: boolean;
+  /** CareerX fork: the egress proxy of the worker's context. Its credentials stay in this object. */
+  readonly proxy?: {
+    readonly server: string;
+    readonly username?: string;
+    readonly password?: string;
+  };
+  /** CareerX fork: the user agent of the worker's context; Chromium's own when absent. */
+  readonly userAgent?: string;
   readonly startupTimeoutMs?: number;
   readonly cleanupTimeoutMs?: number;
   /**
@@ -363,6 +371,8 @@ export const makePlaywrightExecutor = (
               owner.server = yield* promise(() =>
                 chromium.launchServer({
                   headless: options.headless ?? true,
+                  // Chromium takes a context's proxy only when the browser starts with one.
+                  ...(options.proxy === undefined ? {} : { proxy: { server: "per-context" } }),
                   timeout: startupTimeoutMs,
                 }),
               );
@@ -391,6 +401,8 @@ export const makePlaywrightExecutor = (
               endpoint,
               startupTimeoutMs,
               library,
+              ...(options.proxy === undefined ? {} : { proxy: options.proxy }),
+              ...(options.userAgent === undefined ? {} : { userAgent: options.userAgent }),
               ...(resultLimitBytes === undefined ? {} : { resultLimitBytes }),
               ...(options.cdp === undefined
                 ? {}

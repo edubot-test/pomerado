@@ -21,7 +21,8 @@
   },
   "bin": {
     "pomerado": "dist/typescript/src/standalone/cli.js",
-    "pomerado-mcp": "dist/typescript/src/standalone/mcp-cli.js"
+    "pomerado-mcp": "dist/typescript/src/standalone/mcp-cli.js",
+    "pomerado-careerx": "dist/typescript/src/standalone/careerx-cli.js"
   },
   "exports": {
     ".": {
